@@ -49,12 +49,7 @@ module.exports = function (name, defaults, argv, parse) {
   if (env.config) addConfigFile(env.config)
   if (argv.config) addConfigFile(argv.config)
 
-  var allConfigs = [defaults].concat(configs, env, argv)
-
-  return {
-    merged: deepExtend.apply(this, [{}].concat(allConfigs)),
-    configs: allConfigs
-  }
+  return [defaults].concat(configs, env, argv)
 }
 
 if(!module.parent) {
