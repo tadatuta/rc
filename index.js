@@ -49,7 +49,7 @@ module.exports = function (name, defaults, argv, parse) {
   if (env.config) addConfigFile(env.config)
   if (argv.config) addConfigFile(argv.config)
 
-  return [defaults].concat(configs, env, argv)
+  return [defaults].concat(configs, env.length ? env : [], Object.keys(argv).length < 2 ? [] : argv)
 }
 
 if(!module.parent) {
