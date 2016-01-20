@@ -33,6 +33,7 @@ assert.equal(customArgv.envOption, 24)
 var fs = require('fs')
 var path = require('path')
 var jsonrc = path.resolve('.' + n + 'rc');
+var jsonrcParent = path.resolve('..', '.' + n + 'rc');
 
 fs.writeFileSync(jsonrc, [
   '{',
@@ -43,17 +44,26 @@ fs.writeFileSync(jsonrc, [
   '}'
 ].join('\n'));
 
+fs.writeFileSync(jsonrcParent, [
+  '{',
+    '"parentOpt": true,',
+    '"envOption": 12',
+  '}'
+].join('\n'));
+
 var commentedJSON = require('../')(n, {
   option: true
 })
 
 fs.unlinkSync(jsonrc);
+fs.unlinkSync(jsonrcParent);
 
 console.log(commentedJSON)
 
 assert.equal(commentedJSON.option, false)
+assert.equal(commentedJSON.parentOpt, true)
 assert.equal(commentedJSON.envOption, 42)
 
 assert.equal(commentedJSON.config, jsonrc)
-assert.equal(commentedJSON.configs.length, 1)
-assert.equal(commentedJSON.configs[0], jsonrc)
+assert.equal(commentedJSON.configs.length, 2)
+assert.equal(commentedJSON.configs[0], jsonrcParent)

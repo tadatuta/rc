@@ -42,7 +42,8 @@ module.exports = function (name, defaults, argv, parse) {
     join(home, '.config', name),
     join(home, '.' + name, 'config'),
     join(home, '.' + name + 'rc')].forEach(addConfigFile)
-  addConfigFile(cc.find('.'+name+'rc'))
+  cc.find('.'+name+'rc').reverse().forEach(addConfigFile)
+
   if (env.config) addConfigFile(env.config)
   if (argv.config) addConfigFile(argv.config)
 
