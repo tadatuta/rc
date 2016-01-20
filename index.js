@@ -22,13 +22,15 @@ module.exports = function (name, defaults, argv, parse) {
 
   var env = cc.env(name + '_')
 
-  var configs = [defaults]
+  var configs = []
   var configFiles = []
   function addConfigFile (file) {
     if (configFiles.indexOf(file) >= 0) return
     var fileConfig = cc.file(file)
     if (fileConfig) {
-      configs.push(parse(fileConfig))
+      var parsedConfig = parse(fileConfig)
+      parsedConfig.__source = file
+      configs.push(parsedConfig)
       configFiles.push(file)
     }
   }
@@ -47,11 +49,12 @@ module.exports = function (name, defaults, argv, parse) {
   if (env.config) addConfigFile(env.config)
   if (argv.config) addConfigFile(argv.config)
 
-  return deepExtend.apply(null, configs.concat([
-    env,
-    argv,
-    configFiles.length ? {configs: configFiles, config: configFiles[configFiles.length - 1]} : undefined,
-  ]))
+  var allConfigs = [defaults].concat(configs, env, argv)
+
+  return {
+    merged: deepExtend.apply(this, [{}].concat(allConfigs)),
+    configs: allConfigs
+  }
 }
 
 if(!module.parent) {

@@ -24,17 +24,15 @@ var config = require('../')(n, {
 
 console.log('\n\n------ nested-env-vars ------\n',config)
 
-assert.equal(config.option, true)
-assert.equal(config.someOpt.a, 42)
-assert.equal(config.someOpt.x, 99)
+assert.equal(config.merged.option, true)
+assert.equal(config.merged.someOpt.a, 42)
+assert.equal(config.merged.someOpt.x, 99)
 // Should not override `a` once it's been set
-assert.equal(config.someOpt.a/*.b*/, 42)
+assert.equal(config.merged.someOpt.a/*.b*/, 42)
 // Should not override `x` once it's been set
-assert.equal(config.someOpt.x/*.y*/, 99)
-assert.equal(config.someOpt.z, 186577)
+assert.equal(config.merged.someOpt.x/*.y*/, 99)
+assert.equal(config.merged.someOpt.z, 186577)
 // Should not override `z` once it's been set
-assert.equal(config.someOpt.z/*.x*/, 186577)
-assert.equal(config.someOpt.w.w, 18629)
-assert.equal(config.z.i, 9999)
-
-
+assert.equal(config.merged.someOpt.z/*.x*/, 186577)
+assert.equal(config.merged.someOpt.w.w, 18629)
+assert.equal(config.merged.z.i, 9999)

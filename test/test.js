@@ -10,8 +10,8 @@ var config = require('../')(n, {
 
 console.log(config)
 
-assert.equal(config.option, true)
-assert.equal(config.envOption, 42)
+assert.equal(config.merged.option, true)
+assert.equal(config.merged.envOption, 42)
 
 var customArgv = require('../')(n, {
   option: true
@@ -27,8 +27,8 @@ var customArgv = require('../')(n, {
 
 console.log(customArgv)
 
-assert.equal(customArgv.option, false)
-assert.equal(customArgv.envOption, 24)
+assert.equal(customArgv.merged.option, false)
+assert.equal(customArgv.merged.envOption, 24)
 
 var fs = require('fs')
 var path = require('path')
@@ -60,10 +60,9 @@ fs.unlinkSync(jsonrcParent);
 
 console.log(commentedJSON)
 
-assert.equal(commentedJSON.option, false)
-assert.equal(commentedJSON.parentOpt, true)
-assert.equal(commentedJSON.envOption, 42)
+assert.equal(commentedJSON.merged.option, false)
+assert.equal(commentedJSON.merged.parentOpt, true)
+assert.equal(commentedJSON.merged.envOption, 42)
 
-assert.equal(commentedJSON.config, jsonrc)
-assert.equal(commentedJSON.configs.length, 2)
-assert.equal(commentedJSON.configs[0], jsonrcParent)
+assert.equal(commentedJSON.configs.length, 5)
+assert.equal(commentedJSON.configs[1].parentOpt, true)
